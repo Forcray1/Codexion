@@ -6,7 +6,7 @@
 /*   By: martin <martin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 07:58:31 by martin            #+#    #+#             */
-/*   Updated: 2026/03/21 17:20:34 by martin           ###   ########.fr       */
+/*   Updated: 2026/03/21 17:59:00 by martin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,20 @@ static void	error_parse(void)
 
 static int	ft_fill_env(t_env *env, char **argv)
 {
-	env->nb_coders = *argv[1];
-	env->time_bo = *argv[2];
-	env->time_compile = *argv[3];
-	env->time_debug = *argv[4];
-	env->time_refract = *argv[5];
-	env->compile_req = *argv[6];
-	env->dongle_cd = *argv[7];
+	env->nb_coders = ft_atoi(argv[1]);
+	env->time_bo = ft_atoi(argv[2]);
+	env->time_compile = ft_atoi(argv[3]);
+	env->time_debug = ft_atoi(argv[4]);
+	env->time_refract = ft_atoi(argv[5]);
+	env->compile_req = ft_atoi(argv[6]);
+	env->dongle_cd = ft_atoi(argv[7]);
 
 	if (ft_strcmp(argv[8], "fifo") == 0)
-        env->scheduler = 0; 
-    else
-        env->scheduler = 1;
+		env->scheduler = 0;
+	else
+		env->scheduler = 1;
 
-    return (0);
+	return (0);
 }
 
 int	init_base_env(t_env *env, char **argv)
