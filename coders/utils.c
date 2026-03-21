@@ -6,7 +6,7 @@
 /*   By: martin <martin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 11:41:11 by martin            #+#    #+#             */
-/*   Updated: 2026/03/21 16:13:13 by martin           ###   ########.fr       */
+/*   Updated: 2026/03/21 20:04:17 by martin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,22 @@ long long	get_time(void)
 	if (gettimeofday(&tv, NULL))
 		return (0);
 	return ((tv.tv_sec * 1000LL) + (tv.tv_usec / 1000LL));
+}
+
+void	action_sleep(long long duration, t_env *env)
+{
+	long long	start;
+
+	start = get_time();
+	while (1)
+	{
+		pthread_mutex_lock(&env->stop_mutex);
+		if (env->stop_sim || (get_time() - start) >= duration)
+		{
+			pthread_mutex_unlock(&env->stop_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&env->stop_mutex);
+		usleep(500);
+	}
 }

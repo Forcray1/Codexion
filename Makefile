@@ -6,7 +6,7 @@
 #    By: martin <martin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/21 11:29:48 by martin            #+#    #+#              #
-#    Updated: 2026/03/21 17:03:21 by martin           ###   ########.fr        #
+#    Updated: 2026/03/21 20:03:23 by martin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,11 @@ OBJ_DIR     = obj/
 SRC_FILES   = main.c \
               check_value.c \
 			  utils.c \
+			  utils2.c \
 			  simulation.c \
 			  cleanup.c \
 			  init_ressources.c \
+			  monitor.c \
 
 SRC         = $(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ         = $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))

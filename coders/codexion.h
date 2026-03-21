@@ -6,7 +6,7 @@
 /*   By: martin <martin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 08:53:04 by martin            #+#    #+#             */
-/*   Updated: 2026/03/21 17:53:35 by martin           ###   ########.fr       */
+/*   Updated: 2026/03/21 20:09:19 by martin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,17 @@ int			init_resources(struct s_env *env);
 
 int			launch_simulation(struct s_env *env);
 
+void		*monitor_routine(void *arg);
+
 void		final_cleanup(t_env *env);
 
 int			ft_strcmp(char *s1, char *s2);
 int			ft_atoi(char *str);
 long long	get_time(void);
+void		action_sleep(long long duration, t_env *env);
+int			check_stop(t_env *env);
+void		print_status(t_coder *coder, char *status);
+void		wait_for_start(t_env *env);
+int			must_stop(t_env *env);
 
 #endif

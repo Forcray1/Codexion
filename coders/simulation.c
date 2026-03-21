@@ -6,7 +6,7 @@
 /*   By: martin <martin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 16:19:18 by martin            #+#    #+#             */
-/*   Updated: 2026/03/21 19:53:00 by martin           ###   ########.fr       */
+/*   Updated: 2026/03/21 21:59:13 by martin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,41 @@ void	print_env(t_env *e)
 	printf("-----------------\n");
 }
 
+
+int	take_dongles(t_coder *coder)
+{
+	t_env	*env;
+	int		first;
+	int		second;
+
+	env = coder->env;
+	first = coder->id;
+	second = (coder->id + 1) % env->nb_coders;
+	if (first > second)
+	{
+		first = second;
+		second = coder->id;
+	}
+	pthread_mutex_lock(&env->dongles[first].mutex);
+	print_status(coder, "has taken a dongle");
+	pthread_mutex_lock(&env->dongles[second].mutex);
+	print_status(coder, "has taken a dongle");
+	return (0);
+}
+
+void	drop_dongles(t_coder *coder)
+{
+	t_env	*env;
+	int		left;
+	int		right;
+
+	env = coder->env;
+	left = coder->id;
+	right = (coder->id + 1) % env->nb_coders;
+	pthread_mutex_unlock(&env->dongles[left].mutex);
+	pthread_mutex_unlock(&env->dongles[right].mutex);
+}
+
 void	*coder_routine(void *arg)
 {
 	t_coder	*coder;
@@ -35,17 +70,17 @@ void	*coder_routine(void *arg)
 		if (must_stop(env) || coder->nb_compiles >= env->compile_req)
 			break ;
 		print_status(coder, "is refactoring");
-		action_sleep(env->time_to_refactor, env);
+		action_sleep(env->time_refract, env);
 		if (take_dongles(coder) != 0)
 			break ;
 		print_status(coder, "is compiling");
-		action_sleep(env->time_to_compile, env);
+		action_sleep(env->time_compile, env);
 		coder->nb_compiles++;
 		drop_dongles(coder);
 		print_status(coder, "is debugging");
-		action_sleep(env->time_to_debug, env);
+		action_sleep(env->time_debug, env);
 	}
-	return ;
+	return (NULL);
 }
 
 int	launch_simulation(t_env *env)
