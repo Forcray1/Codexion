@@ -6,7 +6,7 @@
 /*   By: martin <martin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:09:53 by martin            #+#    #+#             */
-/*   Updated: 2026/03/21 17:42:58 by martin           ###   ########.fr       */
+/*   Updated: 2026/03/21 18:12:59 by martin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,11 @@ static int	init_dongles(t_env *env)
 		env->dongles[i].id = i;
 		env->dongles[i].is_used = 0;
 		env->dongles[i].last_use = 0;
-
 		env->dongles[i].wait_queue.requests = malloc(sizeof(t_request)
 				* env->nb_coders);
 		if (!env->dongles[i].wait_queue.requests)
 			return (1);
 		env->dongles[i].wait_queue.size = 0;
-
 		pthread_mutex_init(&env->dongles[i].mutex, NULL);
 		pthread_cond_init(&env->dongles[i].cond, NULL);
 	}

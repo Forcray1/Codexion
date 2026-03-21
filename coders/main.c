@@ -6,12 +6,11 @@
 /*   By: martin <martin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 07:58:31 by martin            #+#    #+#             */
-/*   Updated: 2026/03/21 17:59:00 by martin           ###   ########.fr       */
+/*   Updated: 2026/03/21 18:13:33 by martin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-
 
 static void	error_parse(void)
 {
@@ -30,12 +29,10 @@ static int	ft_fill_env(t_env *env, char **argv)
 	env->time_refract = ft_atoi(argv[5]);
 	env->compile_req = ft_atoi(argv[6]);
 	env->dongle_cd = ft_atoi(argv[7]);
-
 	if (ft_strcmp(argv[8], "fifo") == 0)
 		env->scheduler = 0;
 	else
 		env->scheduler = 1;
-
 	return (0);
 }
 
@@ -79,4 +76,3 @@ int	main(int argc, char **argv)
 	final_cleanup(&env);
 	return (0);
 }
-
