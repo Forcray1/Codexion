@@ -6,7 +6,7 @@
 /*   By: martin <martin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 16:19:18 by martin            #+#    #+#             */
-/*   Updated: 2026/03/21 19:12:02 by martin           ###   ########.fr       */
+/*   Updated: 2026/03/21 19:53:00 by martin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,23 @@ void	*coder_routine(void *arg)
 
 	coder = (t_coder *)arg;
 	env = coder->env;
+	wait_for_start(env);
 	while (1)
 	{
-		/*
-		1. Verifier si on doit s'arreter (Burnout ou Finish)
-		2. Refactor (penser)
-		3. Prendre les dongles
-		4. Compiler
-		5. Relacher les dongles
-		Pour l'instant on met un break pour ne pas faire de boucle infinie
-		*/
-		break ;
+		if (must_stop(env) || coder->nb_compiles >= env->compile_req)
+			break ;
+		print_status(coder, "is refactoring");
+		action_sleep(env->time_to_refactor, env);
+		if (take_dongles(coder) != 0)
+			break ;
+		print_status(coder, "is compiling");
+		action_sleep(env->time_to_compile, env);
+		coder->nb_compiles++;
+		drop_dongles(coder);
+		print_status(coder, "is debugging");
+		action_sleep(env->time_to_debug, env);
 	}
-	return (NULL);
+	return ;
 }
 
 int	launch_simulation(t_env *env)
