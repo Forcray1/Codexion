@@ -24,26 +24,25 @@ Codexion is a concurrency simulation project where multiple coders compete for l
   - The program logs coder actions and burnout events with precise timestamps.
 
 ## Blocking cases handled
-- **Deadlock prevention:**
-  - To finish.
-- **Starvation prevention:**
-  - To finish.
-- **Cooldown handling:**
-  - To finish.
-- **Precise burnout detection:**
-  - To finish.
-- **Log serialization:**
-  - To finish.
+- **Deadlock prevention:** To finish.
+- **Starvation prevention:** To finish.
+- **Cooldown handling:** Argument parsing and validation coded, logic to finish.
+- **Precise burnout detection:** Monitor thread structure present, logic to finish.
+- **Log serialization:** To finish.
 
 ## Thread synchronization mechanisms
-- **Mutexes (`pthread_mutex_t`):**
-  - To finish.
-- **Condition variables (`pthread_cond_t`):**
-  - To finish.
-- **Monitor thread:**
-  - To finish.
-- **Thread-safe communication:**
-  - To finish.
+- **Mutexes (`pthread_mutex_t`):** Used for dongle access and stop condition. More logic to finish.
+- **Condition variables (`pthread_cond_t`):** To finish.
+- **Monitor thread:** Structure present, logic to finish.
+- **Thread-safe communication:** To finish.
+## Project status
+- Argument parsing and validation: implemented (`main.c`, `check_value.c`)
+- Environment and coder structure: present (`codexion.h`)
+- Dongle acquisition and release: basic logic present (`simulation.c`)
+- Monitor thread: structure present (`monitor.c`)
+- Utility functions: implemented (`utils.c`)
+- Cleanup: stub present (`cleanup.c`)
+- Logging and full simulation logic: to finish
 
 ## Resources
 - [POSIX Threads Programming](https://computing.llnl.gov/tutorials/pthreads/)
