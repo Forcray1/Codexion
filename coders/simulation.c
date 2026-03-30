@@ -6,83 +6,58 @@
 /*   By: martin <martin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 16:19:18 by martin            #+#    #+#             */
-/*   Updated: 2026/03/22 09:53:04 by martin           ###   ########.fr       */
+/*   Updated: 2026/03/30 20:18:47 by martin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int	take_dongles(t_coder *coder)
+int	do_compile(t_coder *coder)
 {
-	t_env	*env;
-	int		first;
-	int		second;
-
-	env = coder->env;
-	first = coder->id;
-	second = (coder->id + 1) % env->nb_coders;
-	if (first > second)
-	{
-		first = second;
-		second = coder->id;
-	}
-	pthread_mutex_lock(&env->dongles[first].mutex);
-	print_status(coder, "has taken a dongle");
-	pthread_mutex_lock(&env->dongles[second].mutex);
-	print_status(coder, "has taken a dongle");
-	return (0);
-}
-
-void	drop_dongles(t_coder *coder)
-{
-	t_env	*env;
-	int		left;
-	int		right;
-
-	env = coder->env;
-	left = coder->id;
-	right = (coder->id + 1) % env->nb_coders;
-	pthread_mutex_unlock(&env->dongles[left].mutex);
-	pthread_mutex_unlock(&env->dongles[right].mutex);
-}
-
-static int	do_compile(t_coder *coder)
-{
-	t_env	*env;
-
-	env = coder->env;
 	if (take_dongles(coder) != 0)
 		return (1);
-	pthread_mutex_lock(&env->stop_mutex);
-	coder->last_compile_start = get_time();
-	pthread_mutex_unlock(&env->stop_mutex);
 	print_status(coder, "is compiling");
-	action_sleep(env->time_compile, env);
+	action_sleep((long long)coder->env->time_compile, coder->env);
 	coder->nb_compiles++;
 	drop_dongles(coder);
 	return (0);
 }
 
+static int	should_stop(t_coder *c, t_env *e)
+{
+	if (must_stop(e) != 0)
+		return (1);
+	if (e->compile_req != -1)
+	{
+		if (c->nb_compiles >= e->compile_req)
+			return (1);
+	}
+	return (0);
+}
+
 void	*coder_routine(void *arg)
 {
-	t_coder	*coder;
-	t_env	*env;
+	t_coder	*c;
+	t_env	*e;
 
-	coder = (t_coder *)arg;
-	env = coder->env;
-	wait_for_start(env);
-	while (!must_stop(env) && coder->nb_compiles < env->compile_req)
+	c = (t_coder *)arg;
+	e = c->env;
+	wait_for_start(e);
+	while (should_stop(c, e) == 0)
 	{
-		if (do_compile(coder))
+		if (do_compile(c) != 0 || should_stop(c, e) != 0)
 			break ;
-		if (must_stop(env))
+		print_status(c, "is debugging");
+		action_sleep((long long)e->time_debug, e);
+		if (must_stop(e) != 0)
 			break ;
-		print_status(coder, "is debugging");
-		action_sleep(env->time_debug, env);
-		if (must_stop(env))
-			break ;
-		print_status(coder, "is refactoring");
-		action_sleep(env->time_refract, env);
+		print_status(c, "is refactoring");
+		action_sleep((long long)e->time_refract, e);
+	}
+	if (must_stop(e) == 0 && e->compile_req != -1)
+	{
+		if (c->nb_compiles >= e->compile_req)
+			print_status(c, "is done");
 	}
 	return (NULL);
 }

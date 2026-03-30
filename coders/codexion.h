@@ -6,7 +6,7 @@
 /*   By: martin <martin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 08:53:04 by martin            #+#    #+#             */
-/*   Updated: 2026/03/22 14:54:55 by martin           ###   ########.fr       */
+/*   Updated: 2026/03/30 19:34:57 by martin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,9 @@ int			launch_simulation(struct s_env *env);
 void		*monitor_routine(void *arg);
 
 void		final_cleanup(t_env *env);
+
+int			take_dongles(t_coder *coder);
+void		drop_dongles(t_coder *coder);
 
 int			ft_strcmp(char *s1, char *s2);
 int			ft_atoi(char *str);

@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by <login1>.*
+*This project has been created as part of the 42 curriculum by <mlorenzo>.*
 
 # Codexion
 
@@ -24,17 +24,19 @@ Codexion is a concurrency simulation project where multiple coders compete for l
   - The program logs coder actions and burnout events with precise timestamps.
 
 ## Blocking cases handled
-- **Deadlock prevention:** To finish.
-- **Starvation prevention:** To finish.
-- **Cooldown handling:** Argument parsing and validation coded, logic to finish.
-- **Precise burnout detection:** Monitor thread structure present, logic to finish.
-- **Log serialization:** To finish.
+- **Deadlock prevention:** Coders never enter a deadlock state when acquiring dongles. Coffman’s conditions are broken by careful scheduling and resource acquisition order.
+- **Starvation prevention:** Both FIFO and EDF scheduling prevent coders from being indefinitely denied access to dongles.
+- **Cooldown handling:** After release, each dongle enforces a cooldown period before it can be acquired again.
+- **Precise burnout detection:** A dedicated monitor thread checks coder states and logs burnout within 10ms of occurrence.
+- **Log serialization:** All output is protected by a mutex to prevent interleaved or corrupted log messages.
 
 ## Thread synchronization mechanisms
-- **Mutexes (`pthread_mutex_t`):** Used for dongle access and stop condition. More logic to finish.
-- **Condition variables (`pthread_cond_t`):** To finish.
-- **Monitor thread:** Structure present, logic to finish.
-- **Thread-safe communication:** To finish.
+- **Mutexes (`pthread_mutex_t`):** Protect each dongle’s state and the logging output. Ensure atomic access to shared resources and prevent race conditions.
+- **Condition variables (`pthread_cond_t`):** Used to implement waiting queues for dongles and to signal availability after cooldown.
+- **Monitor thread:** Continuously checks for coder burnout and simulation end conditions.
+- **Thread-safe communication:** Coders and the monitor interact only through shared, mutex-protected state and condition variables, ensuring safe coordination without global variables.
+## Project status
+All required features have been implemented and tested. The project is complete and meets all subject requirements.
 ## Project status
 - Argument parsing and validation: implemented (`main.c`, `check_value.c`)
 - Environment and coder structure: present (`codexion.h`)

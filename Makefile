@@ -6,7 +6,7 @@
 #    By: martin <martin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/21 11:29:48 by martin            #+#    #+#              #
-#    Updated: 2026/03/21 20:03:23 by martin           ###   ########.fr        #
+#    Updated: 2026/03/30 19:42:27 by martin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRC_FILES   = main.c \
 			  simulation.c \
 			  cleanup.c \
 			  init_ressources.c \
+			  scheduler.c \
 			  monitor.c \
 
 SRC         = $(addprefix $(SRC_DIR), $(SRC_FILES))
