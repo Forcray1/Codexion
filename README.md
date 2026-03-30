@@ -35,16 +35,15 @@ Codexion is a concurrency simulation project where multiple coders compete for l
 - **Condition variables (`pthread_cond_t`):** Used to implement waiting queues for dongles and to signal availability after cooldown.
 - **Monitor thread:** Continuously checks for coder burnout and simulation end conditions.
 - **Thread-safe communication:** Coders and the monitor interact only through shared, mutex-protected state and condition variables, ensuring safe coordination without global variables.
-## Project status
-All required features have been implemented and tested. The project is complete and meets all subject requirements.
+
 ## Project status
 - Argument parsing and validation: implemented (`main.c`, `check_value.c`)
 - Environment and coder structure: present (`codexion.h`)
-- Dongle acquisition and release: basic logic present (`simulation.c`)
-- Monitor thread: structure present (`monitor.c`)
-- Utility functions: implemented (`utils.c`)
-- Cleanup: stub present (`cleanup.c`)
-- Logging and full simulation logic: to finish
+- Dongle acquisition and release: implemented (`simulation.c`)
+- Monitor thread: implemented (`monitor.c`)
+- Utility functions: implemented (`utils.c`, `utils2.c`)
+- Cleanup: implemented but not tested (`cleanup.c`)
+- Logging and full simulation logic: implemented (`scheduler.c`)
 
 ## Resources
 - [POSIX Threads Programming](https://computing.llnl.gov/tutorials/pthreads/)
@@ -68,4 +67,3 @@ All required features have been implemented and tested. The project is complete 
 803 2 is refactoring
 1204 3 burned out
 ```
-
