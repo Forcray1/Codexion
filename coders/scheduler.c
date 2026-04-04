@@ -6,7 +6,7 @@
 /*   By: martin <martin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 20:04:09 by martin            #+#    #+#             */
-/*   Updated: 2026/03/30 20:12:35 by martin           ###   ########.fr       */
+/*   Updated: 2026/03/31 10:32:47 by martin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ static int	try_take(t_coder *c, t_dongle *f, t_dongle *s)
 	pthread_mutex_lock(&s->mutex);
 	if (f->wait_queue.size > 0 && s->wait_queue.size > 0)
 	{
-		if (f->wait_queue.requests[0].coder_id == c->id 
+		if (f->wait_queue.requests[0].coder_id == c->id
 			&& s->wait_queue.requests[0].coder_id == c->id
-			&& get_time() - f->last_use >= c->env->dongle_cd 
+			&& get_time() - f->last_use >= c->env->dongle_cd
 			&& get_time() - s->last_use >= c->env->dongle_cd)
 		{
 			if (f->is_used == 0 && s->is_used == 0)

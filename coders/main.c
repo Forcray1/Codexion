@@ -6,7 +6,7 @@
 /*   By: martin <martin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 07:58:31 by martin            #+#    #+#             */
-/*   Updated: 2026/03/22 14:57:04 by martin           ###   ########.fr       */
+/*   Updated: 2026/04/04 07:13:35 by martin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	error_parse(void)
 	printf("<number_of_compiles_required> <dongle_cooldown> <scheduler>");
 }
 
-static int	ft_fill_env(t_env *env, char **argv)
+static void	ft_fill_env(t_env *env, char **argv)
 {
 	env->nb_coders = ft_atoi(argv[1]);
 	env->time_bo = ft_atoi(argv[2]);
@@ -36,10 +36,9 @@ static int	ft_fill_env(t_env *env, char **argv)
 	return (0);
 }
 
-int	init_base_env(t_env *env, char **argv)
+static int	init_base_env(t_env *env, char **argv)
 {
-	if (ft_fill_env(env, argv) != 0)
-		return (1);
+	ft_fill_env(env, argv);
 	env->stop_sim = 0;
 	if (pthread_mutex_init(&env->stop_mutex, NULL) != 0)
 		return (1);
