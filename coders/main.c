@@ -6,7 +6,7 @@
 /*   By: martin <martin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 07:58:31 by martin            #+#    #+#             */
-/*   Updated: 2026/04/04 07:13:35 by martin           ###   ########.fr       */
+/*   Updated: 2026/04/05 09:46:24 by martin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static void	ft_fill_env(t_env *env, char **argv)
 		env->scheduler = 0;
 	else
 		env->scheduler = 1;
-	return (0);
 }
 
 static int	init_base_env(t_env *env, char **argv)

@@ -22,6 +22,7 @@ static void	cleanup_dongles(t_env *env)
 	while (i < env->nb_coders)
 	{
 		pthread_mutex_destroy(&env->dongles[i].mutex);
+		pthread_cond_destroy(&env->dongles[i].cond);
 		if (env->dongles[i].wait_queue.requests)
 			free(env->dongles[i].wait_queue.requests);
 		i++;
