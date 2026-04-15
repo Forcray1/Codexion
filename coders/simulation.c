@@ -16,6 +16,9 @@ int	do_compile(t_coder *coder)
 {
 	if (take_dongles(coder) != 0)
 		return (1);
+	pthread_mutex_lock(&coder->env->stop_mutex);
+	coder->last_compile_start = get_time();
+	pthread_mutex_unlock(&coder->env->stop_mutex);
 	print_status(coder, "is compiling");
 	action_sleep((long long)coder->env->time_compile, coder->env);
 	coder->nb_compiles++;

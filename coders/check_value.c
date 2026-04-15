@@ -40,9 +40,9 @@ static int	check_value2(char **argv)
 
 int	check_value(char **argv)
 {
-	if (ft_atoi(argv[1]) <= 1)
+	if (ft_atoi(argv[1]) <= 0)
 	{
-		printf("Number of coder should be a positive integer greater than one");
+		printf("Number of coder should be a positive integer");
 		return (1);
 	}
 	if (ft_atoi(argv[2]) <= 0)

@@ -58,6 +58,8 @@ static int	try_take(t_coder *c, t_dongle *f, t_dongle *s)
 	int	can_take;
 
 	can_take = 0;
+	if (f == s)
+		return (0);
 	pthread_mutex_lock(&f->mutex);
 	pthread_mutex_lock(&s->mutex);
 	if (f->wait_queue.size > 0 && s->wait_queue.size > 0)
