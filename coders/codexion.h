@@ -101,5 +101,7 @@ void		print_status(t_coder *coder, char *status);
 void		wait_for_start(t_env *env);
 int			must_stop(t_env *env);
 int			can_take_s(t_coder *c, t_dongle *f, t_dongle *s);
+void		solo_coder_routine(t_coder *c);
+void		check_done(t_coder *c, t_env *e);
 
 #endif

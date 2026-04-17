@@ -46,11 +46,15 @@ void	*coder_routine(void *arg)
 {
 	t_coder	*c;
 	t_env	*e;
-	int		nb_compiles;
 
 	c = (t_coder *)arg;
 	e = c->env;
 	wait_for_start(e);
+	if (c->left_dongle == c->right_dongle)
+	{
+		solo_coder_routine(c);
+		return (NULL);
+	}
 	while (should_stop(c, e) == 0)
 	{
 		if (do_compile(c) != 0 || should_stop(c, e) != 0)
@@ -62,11 +66,7 @@ void	*coder_routine(void *arg)
 		print_status(c, "is refactoring");
 		action_sleep((long long)e->time_refract, e);
 	}
-	pthread_mutex_lock(&e->stop_mutex);
-	nb_compiles = c->nb_compiles;
-	pthread_mutex_unlock(&e->stop_mutex);
-	if (must_stop(e) == 0 && nb_compiles >= e->compile_req)
-		print_status(c, "is done");
+	check_done(c, e);
 	return (NULL);
 }
 
