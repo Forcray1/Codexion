@@ -21,6 +21,7 @@ SRC_FILES   = main.c \
               check_value.c \
 			  utils.c \
 			  utils2.c \
+			  utils3.c \
 			  simulation.c \
 			  cleanup.c \
 			  init_ressources.c \

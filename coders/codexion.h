@@ -100,5 +100,6 @@ int			check_stop(t_env *env);
 void		print_status(t_coder *coder, char *status);
 void		wait_for_start(t_env *env);
 int			must_stop(t_env *env);
+int			can_take_s(t_coder *c, t_dongle *f, t_dongle *s);
 
 #endif

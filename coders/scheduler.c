@@ -65,10 +65,7 @@ static int	try_take(t_coder *c, t_dongle *f, t_dongle *s)
 		&& f->wait_queue.requests[0].coder_id == c->id
 		&& get_time() - f->last_use >= c->env->dongle_cd
 		&& f->is_used == 0
-		&& (f == s || (s->wait_queue.size > 0
-			&& s->wait_queue.requests[0].coder_id == c->id
-			&& get_time() - s->last_use >= c->env->dongle_cd
-			&& s->is_used == 0)))
+		&& can_take_s(c, f, s))
 	{
 		f->is_used = 1;
 		if (f != s)
@@ -114,7 +111,6 @@ void	drop_dongles(t_coder *coder)
 {
 	t_dongle	*f;
 	t_dongle	*s;
-	long long	now;
 
 	f = coder->left_dongle;
 	s = coder->right_dongle;
@@ -126,12 +122,11 @@ void	drop_dongles(t_coder *coder)
 	pthread_mutex_lock(&f->mutex);
 	if (f != s)
 		pthread_mutex_lock(&s->mutex);
-	now = get_time();
-	f->last_use = now;
+	f->last_use = get_time();
 	f->is_used = 0;
 	if (f != s)
 	{
-		s->last_use = now;
+		s->last_use = f->last_use;
 		s->is_used = 0;
 	}
 	print_status(coder, "has dropped dongles");
