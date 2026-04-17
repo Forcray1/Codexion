@@ -19,7 +19,6 @@ static int	init_dongles(t_env *env)
 	i = -1;
 	while (++i < env->nb_coders)
 	{
-		env->dongles[i].id = i;
 		env->dongles[i].is_used = 0;
 		env->dongles[i].last_use = 0;
 		env->dongles[i].wait_queue.requests = malloc(sizeof(t_request)
@@ -28,7 +27,6 @@ static int	init_dongles(t_env *env)
 			return (1);
 		env->dongles[i].wait_queue.size = 0;
 		pthread_mutex_init(&env->dongles[i].mutex, NULL);
-		pthread_cond_init(&env->dongles[i].cond, NULL);
 	}
 	return (0);
 }

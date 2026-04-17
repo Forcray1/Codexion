@@ -48,11 +48,9 @@ struct s_coder
 
 struct s_dongle
 {
-	int				id;
 	int				is_used;
 	long long		last_use;
 	pthread_mutex_t	mutex;
-	pthread_cond_t	cond;
 	struct s_wait_queue
 	{
 		t_request	*requests;

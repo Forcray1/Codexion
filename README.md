@@ -20,7 +20,7 @@ Codexion is a concurrency simulation project where multiple coders compete for l
     ```
   - `scheduler` must be either `fifo` (First In, First Out) or `edf` (Earliest Deadline First).
 - **Requirements:**
-  - All arguments are mandatory and must be valid (positive integers, valid scheduler).
+  - All arguments are mandatory. Numeric arguments must be valid integers (non-integer input like `abc` is rejected). All values except `dongle_cooldown` must be strictly positive.
   - The program logs coder actions and burnout events with precise timestamps.
 
 ## Blocking cases handled
