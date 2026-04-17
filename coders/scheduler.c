@@ -89,8 +89,7 @@ int	take_dongles(t_coder *c)
 
 	prio = get_time();
 	if (c->env->scheduler == 1)
-		prio = (c->last_compile_start + c->env->time_bo)
-			* (long long)(c->env->nb_coders + 1) - c->id;
+		prio = c->last_compile_start + c->env->time_bo;
 	f = c->left_dongle;
 	s = c->right_dongle;
 	if (f > s)
