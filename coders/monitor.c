@@ -23,7 +23,7 @@ static int	check_burnout(t_env *env, int i)
 		env->stop_sim = 1;
 		pthread_mutex_unlock(&env->stop_mutex);
 		pthread_mutex_lock(&env->log_mutex);
-		printf("%lld ms | Coder %d has burned out!\n",
+		printf("%lld %d burned out\n",
 			now - env->start_time, env->coders[i].id);
 		pthread_mutex_unlock(&env->log_mutex);
 		return (1);

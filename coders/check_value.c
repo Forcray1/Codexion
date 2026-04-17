@@ -12,6 +12,23 @@
 
 #include "codexion.h"
 
+static int	check_all_ints(char **argv)
+{
+	int	i;
+
+	i = 1;
+	while (i <= 7)
+	{
+		if (!ft_is_int(argv[i]))
+		{
+			printf("All numeric arguments must be valid integers\n");
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 static int	check_value2(char **argv)
 {
 	if (ft_atoi(argv[5]) <= 0)
@@ -40,6 +57,8 @@ static int	check_value2(char **argv)
 
 int	check_value(char **argv)
 {
+	if (check_all_ints(argv) != 0)
+		return (1);
 	if (ft_atoi(argv[1]) <= 0)
 	{
 		printf("Number of coder should be a positive integer");

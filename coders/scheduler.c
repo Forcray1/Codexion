@@ -58,26 +58,25 @@ static int	try_take(t_coder *c, t_dongle *f, t_dongle *s)
 	int	can_take;
 
 	can_take = 0;
-	if (f == s)
-		return (0);
 	pthread_mutex_lock(&f->mutex);
-	pthread_mutex_lock(&s->mutex);
-	if (f->wait_queue.size > 0 && s->wait_queue.size > 0)
-	{
-		if (f->wait_queue.requests[0].coder_id == c->id
+	if (f != s)
+		pthread_mutex_lock(&s->mutex);
+	if (f->wait_queue.size > 0
+		&& f->wait_queue.requests[0].coder_id == c->id
+		&& get_time() - f->last_use >= c->env->dongle_cd
+		&& f->is_used == 0
+		&& (f == s || (s->wait_queue.size > 0
 			&& s->wait_queue.requests[0].coder_id == c->id
-			&& get_time() - f->last_use >= c->env->dongle_cd
-			&& get_time() - s->last_use >= c->env->dongle_cd)
-		{
-			if (f->is_used == 0 && s->is_used == 0)
-			{
-				f->is_used = 1;
-				s->is_used = 1;
-				can_take = 1;
-			}
-		}
+			&& get_time() - s->last_use >= c->env->dongle_cd
+			&& s->is_used == 0)))
+	{
+		f->is_used = 1;
+		if (f != s)
+			s->is_used = 1;
+		can_take = 1;
 	}
-	pthread_mutex_unlock(&s->mutex);
+	if (f != s)
+		pthread_mutex_unlock(&s->mutex);
 	pthread_mutex_unlock(&f->mutex);
 	return (can_take);
 }
@@ -113,13 +112,30 @@ int	take_dongles(t_coder *c)
 
 void	drop_dongles(t_coder *coder)
 {
-	pthread_mutex_lock(&coder->left_dongle->mutex);
-	pthread_mutex_lock(&coder->right_dongle->mutex);
-	coder->left_dongle->last_use = get_time();
-	coder->right_dongle->last_use = get_time();
-	coder->left_dongle->is_used = 0;
-	coder->right_dongle->is_used = 0;
+	t_dongle	*f;
+	t_dongle	*s;
+	long long	now;
+
+	f = coder->left_dongle;
+	s = coder->right_dongle;
+	if (f > s)
+	{
+		f = coder->right_dongle;
+		s = coder->left_dongle;
+	}
+	pthread_mutex_lock(&f->mutex);
+	if (f != s)
+		pthread_mutex_lock(&s->mutex);
+	now = get_time();
+	f->last_use = now;
+	f->is_used = 0;
+	if (f != s)
+	{
+		s->last_use = now;
+		s->is_used = 0;
+	}
 	print_status(coder, "has dropped dongles");
-	pthread_mutex_unlock(&coder->right_dongle->mutex);
-	pthread_mutex_unlock(&coder->left_dongle->mutex);
+	if (f != s)
+		pthread_mutex_unlock(&s->mutex);
+	pthread_mutex_unlock(&f->mutex);
 }

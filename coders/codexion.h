@@ -95,6 +95,7 @@ void		drop_dongles(t_coder *coder);
 
 int			ft_strcmp(char *s1, char *s2);
 int			ft_atoi(char *str);
+int			ft_is_int(char *str);
 long long	get_time(void);
 void		action_sleep(long long duration, t_env *env);
 int			check_stop(t_env *env);

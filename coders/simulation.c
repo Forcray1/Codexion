@@ -21,20 +21,24 @@ int	do_compile(t_coder *coder)
 	pthread_mutex_unlock(&coder->env->stop_mutex);
 	print_status(coder, "is compiling");
 	action_sleep((long long)coder->env->time_compile, coder->env);
+	pthread_mutex_lock(&coder->env->stop_mutex);
 	coder->nb_compiles++;
+	pthread_mutex_unlock(&coder->env->stop_mutex);
 	drop_dongles(coder);
 	return (0);
 }
 
 static int	should_stop(t_coder *c, t_env *e)
 {
+	int	nb_compiles;
+
 	if (must_stop(e) != 0)
 		return (1);
-	if (e->compile_req != -1)
-	{
-		if (c->nb_compiles >= e->compile_req)
-			return (1);
-	}
+	pthread_mutex_lock(&e->stop_mutex);
+	nb_compiles = c->nb_compiles;
+	pthread_mutex_unlock(&e->stop_mutex);
+	if (nb_compiles >= e->compile_req)
+		return (1);
 	return (0);
 }
 
@@ -42,6 +46,7 @@ void	*coder_routine(void *arg)
 {
 	t_coder	*c;
 	t_env	*e;
+	int		nb_compiles;
 
 	c = (t_coder *)arg;
 	e = c->env;
@@ -57,11 +62,11 @@ void	*coder_routine(void *arg)
 		print_status(c, "is refactoring");
 		action_sleep((long long)e->time_refract, e);
 	}
-	if (must_stop(e) == 0 && e->compile_req != -1)
-	{
-		if (c->nb_compiles >= e->compile_req)
-			print_status(c, "is done");
-	}
+	pthread_mutex_lock(&e->stop_mutex);
+	nb_compiles = c->nb_compiles;
+	pthread_mutex_unlock(&e->stop_mutex);
+	if (must_stop(e) == 0 && nb_compiles >= e->compile_req)
+		print_status(c, "is done");
 	return (NULL);
 }
 

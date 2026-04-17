@@ -25,7 +25,8 @@ void	print_status(t_coder *coder, char *status)
 	pthread_mutex_unlock(&coder->env->stop_mutex);
 	pthread_mutex_lock(&coder->env->log_mutex);
 	now = get_time() - coder->env->start_time;
-	printf("%lld ms | Coder %d %s\n", now, coder->id, status);
+	printf("%lld %d %s\n", now, coder->id, status);
+	fflush(stdout);
 	pthread_mutex_unlock(&coder->env->log_mutex);
 }
 
@@ -53,4 +54,22 @@ int	must_stop(t_env *env)
 	stop = env->stop_sim;
 	pthread_mutex_unlock(&env->stop_mutex);
 	return (stop);
+}
+
+int	ft_is_int(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	if (!str[i])
+		return (0);
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
 }
